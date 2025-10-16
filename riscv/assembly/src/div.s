@@ -16,10 +16,13 @@ div:
     # do your work
     # example of printing inputs a0 and a1
 
+
     li t0,  0 # Quotient
     li t1,  0 # Remainder
 
     li t2,  31 # i
+
+    beqz a1, end_loop
 
 loop:
     blt t2, zero, end_loop
