@@ -15,8 +15,36 @@ div:
 
     # do your work
     # example of printing inputs a0 and a1
-    DEBUG_PRINT a0
-    DEBUG_PRINT a1
+
+    li t0,  0 # Quotient
+    li t1,  0 # Remainder
+
+    li t2,  31 # i
+
+loop:
+    blt t2, zero, end_loop
+
+    # left shift R
+    slli t1,  t1,  1
+
+    # R[0] = N[i]
+    srl  t3,  a0,  t2
+    andi t3,  t3,  1
+    or   t1,  t1,  t3
+    
+    # if R>=D then R = R-D, Q[i] = 1
+    blt  t1,  a1,  iterate
+    sub  t1,  t1,  a1
+
+    li   t3,   1
+    sll  t3,  t3,  t2
+    or   t0,  t0,  t3
+iterate:
+    addi t2,  t2,  -1
+    j loop
+end_loop:
+    mv a0,  t0
+    mv a1,  t1
 
     # load every register you stored above
     lw   ra, 28(sp)
