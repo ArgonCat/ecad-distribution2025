@@ -20,11 +20,12 @@ div:
     li t0,  0 # Quotient
     li t1,  0 # Remainder
 
-    li t2,  31 # i
+    li t2,  32 # i
 
     beqz a1, end_loop
 
 loop:
+    addi t2,  t2,  -1
     blt t2, zero, end_loop
 
     # left shift R
@@ -36,14 +37,13 @@ loop:
     or   t1,  t1,  t3
     
     # if R>=D then R = R-D, Q[i] = 1
-    blt  t1,  a1,  iterate
+    blt  t1,  a1,  loop
     sub  t1,  t1,  a1
 
     li   t3,   1
     sll  t3,  t3,  t2
     or   t0,  t0,  t3
-iterate:
-    addi t2,  t2,  -1
+
     j loop
 end_loop:
     mv a0,  t0
